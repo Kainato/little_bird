@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:little_bird/config/image_path.dart';
+import 'package:little_bird/app/home_page.dart';
 import 'package:little_bird/config/theme.dart';
 
 void main() {
@@ -16,19 +16,7 @@ class MainApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      home: Scaffold(
-        drawer: const Drawer(),
-        appBar: AppBar(
-          title: const Text('Little Bird'),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Image.asset(Gallery(context).imagotipo),
-            ],
-          ),
-        ),
-      ),
+      home: const HomePage(),
     );
   }
 }

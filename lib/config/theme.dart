@@ -114,4 +114,10 @@ class AppTheme {
       ),
     ),
   );
+
+  Color get backgroundLogo {
+    return Theme.of(context).brightness == Brightness.dark
+        ? dark.colorScheme.inverseSurface
+        : light.colorScheme.primary;
+  }
 }
