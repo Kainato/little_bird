@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:little_bird/app/home_page.dart';
+import 'package:little_bird/config/routes.dart';
 import 'package:little_bird/config/theme.dart';
 
 void main() {
@@ -12,7 +13,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: routes,
+      initialRoute: '/home',
       title: 'Little Bird',
+      locale: const Locale('pt', 'BR'),
       themeMode: ThemeMode.system,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:little_bird/config/image_path.dart';
+import 'package:little_bird/config/routes.dart';
 import 'package:little_bird/config/theme.dart';
+import 'package:little_bird/widgets/drawer_list_tile.dart';
 
 class DrawerBase extends StatelessWidget implements Drawer {
   /// Um drawer base para ser usada em todas as telas.
@@ -24,21 +26,38 @@ class DrawerBase extends StatelessWidget implements Drawer {
             ),
             child: Container(),
           ),
-          ListTile(
-            title: const Text('Página inicial'),
-            onTap: () {
-              Navigator.pop(context);
-            },
+          DrawerListTile(
+            title: 'Página inicial',
+            selected:
+                ModalRoute.of(context)?.settings.name == AppRoutes.home.route,
+            leading: const Icon(Icons.home),
+            onTap: () => _onTapDrawerListTile(
+              context,
+              route: AppRoutes.home.route,
+            ),
           ),
-          ListTile(
-            title: const Text('Sobre'),
-            onTap: () {
-              Navigator.pop(context);
-            },
+          const DrawerListTile(
+            title: 'Calculadora',
+            selected: false,
+            leading: Icon(Icons.calculate),
+          ),
+          const DrawerListTile(
+            title: 'Sobre',
+            selected: false,
+            leading: Icon(Icons.info),
           ),
         ],
       ),
     );
+  }
+
+  void _onTapDrawerListTile(BuildContext context, {required String route}) {
+    if (ModalRoute.of(context)?.settings.name == route) {
+      Navigator.of(context).pop();
+      return;
+    } else {
+      Navigator.of(context).popAndPushNamed(route);
+    }
   }
 
   @override
