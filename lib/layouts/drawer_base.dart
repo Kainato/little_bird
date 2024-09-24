@@ -28,18 +28,21 @@ class DrawerBase extends StatelessWidget implements Drawer {
           ),
           DrawerListTile(
             title: 'Página inicial',
-            selected:
-                ModalRoute.of(context)?.settings.name == AppRoutes.home.route,
+            selected: _itemSelected(context, route: AppRoutes.home.route),
             leading: const Icon(Icons.home),
             onTap: () => _onTapDrawerListTile(
               context,
               route: AppRoutes.home.route,
             ),
           ),
-          const DrawerListTile(
+          DrawerListTile(
             title: 'Calculadora',
-            selected: false,
-            leading: Icon(Icons.calculate),
+            selected: _itemSelected(context, route: AppRoutes.calculator.route),
+            leading: const Icon(Icons.calculate),
+            onTap: () => _onTapDrawerListTile(
+              context,
+              route: AppRoutes.calculator.route,
+            ),
           ),
           const DrawerListTile(
             title: 'Sobre',
@@ -49,6 +52,10 @@ class DrawerBase extends StatelessWidget implements Drawer {
         ],
       ),
     );
+  }
+
+  bool _itemSelected(BuildContext context, {required String route}) {
+    return ModalRoute.of(context)?.settings.name == route;
   }
 
   void _onTapDrawerListTile(BuildContext context, {required String route}) {

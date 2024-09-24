@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:little_bird/layouts/scaffold_base.dart';
 
+/// Página inicial do aplicativo
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
