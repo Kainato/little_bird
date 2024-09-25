@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:little_bird/config/app_theme.dart';
 import 'package:little_bird/enums/calculator_enum.dart';
+import 'package:little_bird/widgets/card_grid_tile.dart';
 
 class CalculatorGrid extends StatefulWidget {
   final String label;
@@ -23,14 +25,16 @@ class _CalculatorGridState extends State<CalculatorGrid> {
   void Function()? get onPressed => widget.onPressed;
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return CardGridTile(
       onPressed: onPressed,
-      child: Text(
-        label,
-        style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          // color: AppTheme(context).
+      child: Center(
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppTheme(context).backgroundLogo,
+          ),
         ),
       ),
     );

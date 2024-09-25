@@ -18,12 +18,16 @@ class ScaffoldBase extends StatelessWidget {
   /// Ícone que subtitui a foto do aplicativo no título da appbar
   final IconData? icon;
 
+  /// Ações que aparecem no canto direito da appbar
+  final List<Widget>? actions;
+
   /// Um scaffold base para ser usada em todas as telas
   const ScaffoldBase({
     super.key,
     this.hasDrawer = false,
     required this.title,
     required this.body,
+    this.actions,
     this.icon,
     this.floatingActionButton,
   });
@@ -31,7 +35,7 @@ class ScaffoldBase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarBase(title: title, icon: icon),
+      appBar: AppBarBase(title: title, icon: icon, actions: actions),
       drawer: hasDrawer ? const DrawerBase() : null,
       body: body,
       floatingActionButton: floatingActionButton,

@@ -13,16 +13,21 @@ class CalculatorPage extends StatefulWidget {
 
 class _CalculatorPageState extends State<CalculatorPage> {
   final EdgeInsetsGeometry _padding = const EdgeInsets.all(12);
-  bool _isFirstNumber = true;
-  int _firstNumber = 0;
-  int _secondNumber = 0;
-  num? _result;
+  String _firstNumber = '';
+  String _secondNumber = '';
+  final List<Map<String, String>> _result = [];
   String _operator = '';
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldBase(
       hasDrawer: true,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.history),
+          onPressed: () => _history(),
+        ),
+      ],
       icon: Icons.calculate,
       title: 'Calculadora',
       body: Column(
@@ -34,12 +39,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
             child: Align(
               alignment: Alignment.centerRight,
               child: Text(
-                _result == null
-                    ? _operator == ''
-                        ? '$_firstNumber'
-                        : '$_firstNumber $_operator $_secondNumber'
-                    : '$_result',
+                _display(),
                 style: Theme.of(context).textTheme.headlineMedium,
+                textAlign: TextAlign.right,
               ),
             ),
           ),
@@ -59,82 +61,129 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 return CalculatorGrid(
                   label: item.label,
                   style: item.style,
-                  onPressed: () {
-                    setState(
-                      () {
-                        switch (item.style) {
-                          case CalculatorEnum.number:
-                            if (_isFirstNumber) {
-                              _secondNumber = 0;
-                              _operator = '';
-                              if (_firstNumber == 0) {
-                                _firstNumber = item.value.toInt();
-                              } else {
-                                _firstNumber =
-                                    (_firstNumber * 10 + item.value).toInt();
-                              }
-                            } else {
-                              if (_secondNumber == 0) {
-                                _secondNumber = item.value.toInt();
-                              } else {
-                                _secondNumber =
-                                    (_secondNumber * 10 + item.value).toInt();
-                              }
-                            }
-                            break;
-                          case CalculatorEnum.clear:
-                            _firstNumber = 0;
-                            _secondNumber = 0;
-                            _operator = '';
-                            _isFirstNumber = true;
-                            break;
-                          case CalculatorEnum.equal:
-                            _isFirstNumber = false;
-                            switch (_operator) {
-                              case '+':
-                                _result = _firstNumber + _secondNumber;
-                                break;
-                              case '-':
-                                _result = _firstNumber - _secondNumber;
-                                break;
-                              case 'x':
-                                _result = _firstNumber * _secondNumber;
-                                break;
-                              case '/':
-                                _result = _firstNumber / _secondNumber;
-                                break;
-                              default:
-                                break;
-                            }
-                            break;
-                          case CalculatorEnum.multiply:
-                            _isFirstNumber = false;
-                            _operator = CalculatorEnum.multiply.label;
-                            _result = _firstNumber * _secondNumber;
-                            break;
-                          case CalculatorEnum.divide:
-                            _isFirstNumber = false;
-                            _operator = CalculatorEnum.divide.label;
-                            break;
-                          case CalculatorEnum.add:
-                            _isFirstNumber = false;
-                            _operator = CalculatorEnum.add.label;
-                            break;
-                          case CalculatorEnum.subtract:
-                            _isFirstNumber = false;
-                            _operator = CalculatorEnum.subtract.label;
-                            break;
-                          default:
-                        }
-                      },
-                    );
-                  },
+                  onPressed: () => _calculate(item: item),
                 );
               },
             ),
           ),
         ],
       ),
+    );
+  }
+
+  String _display() {
+    if (_firstNumber.isEmpty) {
+      return '0';
+    } else if (_operator.isEmpty) {
+      return _firstNumber;
+    } else if (_operator.isNotEmpty) {
+      return '$_firstNumber $_operator $_secondNumber';
+    } else {
+      return _result.last.keys.first;
+    }
+  }
+
+  Future _history() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Histórico'),
+          content: SizedBox(
+            width: double.maxFinite,
+            height: 200,
+            child: ListView.builder(
+              itemCount: _result.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    _result[index].values.first,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  subtitle: Text(
+                    _result[index].keys.first,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  leading: CircleAvatar(
+                    child: Text('${index + 1}'),
+                  ),
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Fechar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _calculate({required CalculatorClass item}) {
+    setState(
+      () {
+        switch (item.style) {
+          case CalculatorEnum.number:
+            if (_operator.isEmpty) {
+              _firstNumber += item.value.toString();
+            } else {
+              _secondNumber += item.value.toString();
+            }
+            break;
+          case CalculatorEnum.add:
+            _operator = '+';
+            break;
+          case CalculatorEnum.subtract:
+            _operator = '-';
+            break;
+          case CalculatorEnum.multiply:
+            _operator = 'x';
+            break;
+          case CalculatorEnum.divide:
+            _operator = '/';
+            break;
+          case CalculatorEnum.clear:
+            _firstNumber = '';
+            _secondNumber = '';
+            _operator = '';
+            break;
+          case CalculatorEnum.equal:
+            if (_firstNumber.isNotEmpty &&
+                _secondNumber.isNotEmpty &&
+                _operator.isNotEmpty) {
+              double first = double.parse(_firstNumber);
+              double second = double.parse(_secondNumber);
+              double result = 0;
+              switch (_operator) {
+                case '+':
+                  result = first + second;
+                  break;
+                case '-':
+                  result = first - second;
+                  break;
+                case 'x':
+                  result = first * second;
+                  break;
+                case '/':
+                  result = first / second;
+                  break;
+                default:
+              }
+              _result.add({
+                result.toString(): '$_firstNumber $_operator $_secondNumber'
+              });
+              _firstNumber = result.toString();
+              _secondNumber = '';
+              _operator = '';
+            }
+            break;
+          default:
+        }
+      },
     );
   }
 }

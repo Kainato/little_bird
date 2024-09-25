@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:little_bird/app/home_page.dart';
 import 'package:little_bird/config/routes.dart';
-import 'package:little_bird/config/theme.dart';
+import 'package:little_bird/config/app_theme.dart';
 
 void main() {
   runApp(const MainApp());

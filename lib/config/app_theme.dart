@@ -65,8 +65,13 @@ class AppTheme {
   static ThemeData dark = ThemeData(
     useMaterial3: false,
     iconTheme: const IconThemeData(color: Colors.white),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF121212),
+      iconTheme: IconThemeData(color: Colors.white),
+    ),
     cardTheme: CardTheme(
-      color: const Color(0xFF282828), // surfaceContainerHighest
+      color:
+          const Color(0xFF1E1E1E), //Surface with 1dp elevation surface overlay
       shadowColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),

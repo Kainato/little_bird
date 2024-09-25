@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:little_bird/config/image_path.dart';
 import 'package:little_bird/config/routes.dart';
-import 'package:little_bird/config/theme.dart';
+import 'package:little_bird/config/app_theme.dart';
 import 'package:little_bird/widgets/drawer_list_tile.dart';
 
 class DrawerBase extends StatelessWidget implements Drawer {
