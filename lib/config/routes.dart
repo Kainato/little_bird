@@ -1,6 +1,6 @@
 // Definição da enumeração para as rotas
 import 'package:flutter/material.dart';
-import 'package:little_bird/app/calculator_page.dart';
+import 'package:little_bird/app/calculator/calculator_page.dart';
 import 'package:little_bird/app/home_page.dart';
 
 /// Enumeração para as rotas da aplicação
