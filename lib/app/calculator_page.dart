@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:little_bird/enums/calculator_enum.dart';
+import 'package:little_bird/layouts/dialog_base.dart';
 import 'package:little_bird/layouts/scaffold_base.dart';
 import 'package:little_bird/widgets/calculator_grid.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Página de calculadora
 class CalculatorPage extends StatefulWidget {
@@ -13,10 +15,29 @@ class CalculatorPage extends StatefulWidget {
 
 class _CalculatorPageState extends State<CalculatorPage> {
   final EdgeInsetsGeometry _padding = const EdgeInsets.all(12);
+  final List<Map<String, String>> _result = [];
   String _firstNumber = '';
   String _secondNumber = '';
-  final List<Map<String, String>> _result = [];
   String _operator = '';
+  final Future<SharedPreferencesWithCache> _prefs =
+      SharedPreferencesWithCache.create(
+    cacheOptions: const SharedPreferencesWithCacheOptions(
+      allowList: <String>{'calculator_history'},
+    ),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _prefs.then((prefs) {
+      List<String> history = prefs.getStringList('calculator_history') ?? [];
+      _result.clear();
+      for (var element in history) {
+        List<String> item = element.split(':');
+        _result.add({item[0]: item[1]});
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +49,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
           onPressed: () => _history(),
         ),
       ],
-      icon: Icons.calculate,
       title: 'Calculadora',
       body: Column(
         children: [
@@ -85,39 +105,28 @@ class _CalculatorPageState extends State<CalculatorPage> {
 
   Future _history() {
     return showDialog(
+      useSafeArea: true,
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('Histórico'),
-          content: SizedBox(
-            width: double.maxFinite,
-            height: 200,
-            child: ListView.builder(
-              itemCount: _result.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(
-                    _result[index].values.first,
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  subtitle: Text(
-                    _result[index].keys.first,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  leading: CircleAvatar(
-                    child: Text('${index + 1}'),
-                  ),
-                );
-              },
-            ),
+        return DialogBase(
+          icon: Icons.history,
+          title: 'Histórico',
+          children: List.generate(
+            _result.length,
+            (index) {
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  _result[index].values.first,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                subtitle: Text(
+                  _result[index].keys.first,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              );
+            },
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Fechar'),
-            ),
-          ],
         );
       },
     );
@@ -173,6 +182,12 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   break;
                 default:
               }
+              _prefs.then((prefs) {
+                List<String> history =
+                    prefs.getStringList('calculator_history') ?? [];
+                history.add('$result:$_firstNumber $_operator $_secondNumber');
+                prefs.setStringList('calculator_history', history);
+              });
               _result.add({
                 result.toString(): '$_firstNumber $_operator $_secondNumber'
               });

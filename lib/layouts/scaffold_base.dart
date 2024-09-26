@@ -35,9 +35,9 @@ class ScaffoldBase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarBase(title: title, icon: icon, actions: actions),
+      appBar: AppBarBase(title: title, actions: actions),
       drawer: hasDrawer ? const DrawerBase() : null,
-      body: body,
+      body: SafeArea(child: body),
       floatingActionButton: floatingActionButton,
     );
   }
