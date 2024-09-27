@@ -22,12 +22,9 @@ class DialogBase extends StatelessWidget {
       child: AlertDialog(
         icon: icon != null ? Icon(icon) : null,
         title: Text(title),
-        content: Container(
-          constraints: BoxConstraints(
-            maxWidth: 600,
-            maxHeight: MediaQuery.of(context).size.height * 0.25,
-          ),
-          child: Column(children: children),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: children,
         ),
         actions: [
           TextButton(
