@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:little_bird/config/app_theme.dart';
 import 'package:little_bird/config/image_path.dart';
 import 'package:little_bird/config/routes.dart';
-import 'package:little_bird/config/app_theme.dart';
 import 'package:little_bird/widgets/drawer_list_tile.dart';
 
 class DrawerBase extends StatelessWidget implements Drawer {
@@ -44,10 +44,23 @@ class DrawerBase extends StatelessWidget implements Drawer {
               route: AppRoutes.calculator.route,
             ),
           ),
-          const DrawerListTile(
+          DrawerListTile(
+            title: 'Configurações',
+            selected: _itemSelected(context, route: AppRoutes.settings.route),
+            leading: const Icon(Icons.settings),
+            onTap: () => _onTapDrawerListTile(
+              context,
+              route: AppRoutes.settings.route,
+            ),
+          ),
+          DrawerListTile(
             title: 'Sobre',
-            selected: false,
-            leading: Icon(Icons.info),
+            selected: _itemSelected(context, route: AppRoutes.about.route),
+            leading: const Icon(Icons.info),
+            onTap: () => _onTapDrawerListTile(
+              context,
+              route: AppRoutes.about.route,
+            ),
           ),
         ],
       ),
