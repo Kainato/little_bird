@@ -29,7 +29,13 @@ class AboutPage extends StatelessWidget {
           const TransparentDivider(),
           SelectableText(
             'Olá! Meu nome é Caio Calado, sou desenvolvedor Flutter!',
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context).textTheme.headlineSmall,
+            textAlign: TextAlign.center,
+          ),
+          const TransparentDivider(),
+          SelectableText(
+            'Projeto pessoal que demonstra meu conhecimento e habilidades em Flutter de forma clara, objetiva e funcional',
+            style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
         ],
