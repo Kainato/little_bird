@@ -15,9 +15,6 @@ class ScaffoldBase extends StatelessWidget {
   /// Botão flutuante que aparece no canto inferior direito da tela.
   final FloatingActionButton? floatingActionButton;
 
-  /// Ícone que subtitui a foto do aplicativo no título da appbar
-  final IconData? icon;
-
   /// Ações que aparecem no canto direito da appbar
   final List<Widget>? actions;
 
@@ -28,7 +25,6 @@ class ScaffoldBase extends StatelessWidget {
     required this.title,
     required this.body,
     this.actions,
-    this.icon,
     this.floatingActionButton,
   });
 
