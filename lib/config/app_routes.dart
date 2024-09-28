@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:little_bird/app/about_page.dart';
 import 'package:little_bird/app/calculator/calculator_page.dart';
 import 'package:little_bird/app/home_page.dart';
-import 'package:little_bird/app/settings_page.dart';
+import 'package:little_bird/app/settings/settings_page.dart';
 
 /// Enumeração para as rotas da aplicação
 enum AppRoutes {
@@ -27,6 +27,21 @@ extension AppRoutesExtension on AppRoutes {
         return '/settings';
       default:
         return '';
+    }
+  }
+
+  Widget get page {
+    switch (this) {
+      case AppRoutes.home:
+        return const HomePage();
+      case AppRoutes.about:
+        return const AboutPage();
+      case AppRoutes.calculator:
+        return const CalculatorPage();
+      case AppRoutes.settings:
+        return const SettingsPage();
+      default:
+        return const HomePage();
     }
   }
 }

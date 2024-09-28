@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:little_bird/config/app_media.dart';
+import 'package:little_bird/config/app_routes.dart';
 import 'package:little_bird/config/app_theme.dart';
-import 'package:little_bird/config/image_path.dart';
-import 'package:little_bird/config/routes.dart';
 import 'package:little_bird/widgets/drawer_list_tile.dart';
 
 class DrawerBase extends StatelessWidget implements Drawer {
@@ -12,38 +12,56 @@ class DrawerBase extends StatelessWidget implements Drawer {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Column(
         children: [
-          DrawerHeader(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image:
-                    AssetImage(Gallery(context).isotipoTransparente.toString()),
-                fit: BoxFit.contain,
-              ),
-              color: AppTheme(context).backgroundLogo,
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                          AppMedia(context).isotipoTransparente.toString()),
+                      fit: BoxFit.contain,
+                    ),
+                    color: AppTheme(context).backgroundLogo,
+                  ),
+                  child: Container(),
+                ),
+                DrawerListTile(
+                  title: 'Página inicial',
+                  selected: _itemSelected(context, route: AppRoutes.home.route),
+                  leading: const Icon(Icons.home),
+                  onTap: () => _onTapDrawerListTile(
+                    context,
+                    route: AppRoutes.home.route,
+                  ),
+                ),
+                DrawerListTile(
+                  title: 'Calculadora mini',
+                  selected:
+                      _itemSelected(context, route: AppRoutes.calculator.route),
+                  leading: const Icon(Icons.calculate),
+                  onTap: () => _onTapDrawerListTile(
+                    context,
+                    route: AppRoutes.calculator.route,
+                  ),
+                ),
+                DrawerListTile(
+                  title: 'Sobre',
+                  selected:
+                      _itemSelected(context, route: AppRoutes.about.route),
+                  leading: const Icon(Icons.info),
+                  onTap: () => _onTapDrawerListTile(
+                    context,
+                    route: AppRoutes.about.route,
+                  ),
+                ),
+              ],
             ),
-            child: Container(),
           ),
-          DrawerListTile(
-            title: 'Página inicial',
-            selected: _itemSelected(context, route: AppRoutes.home.route),
-            leading: const Icon(Icons.home),
-            onTap: () => _onTapDrawerListTile(
-              context,
-              route: AppRoutes.home.route,
-            ),
-          ),
-          DrawerListTile(
-            title: 'Calculadora',
-            selected: _itemSelected(context, route: AppRoutes.calculator.route),
-            leading: const Icon(Icons.calculate),
-            onTap: () => _onTapDrawerListTile(
-              context,
-              route: AppRoutes.calculator.route,
-            ),
-          ),
+          const Divider(),
           DrawerListTile(
             title: 'Configurações',
             selected: _itemSelected(context, route: AppRoutes.settings.route),
@@ -51,15 +69,6 @@ class DrawerBase extends StatelessWidget implements Drawer {
             onTap: () => _onTapDrawerListTile(
               context,
               route: AppRoutes.settings.route,
-            ),
-          ),
-          DrawerListTile(
-            title: 'Sobre',
-            selected: _itemSelected(context, route: AppRoutes.about.route),
-            leading: const Icon(Icons.info),
-            onTap: () => _onTapDrawerListTile(
-              context,
-              route: AppRoutes.about.route,
             ),
           ),
         ],

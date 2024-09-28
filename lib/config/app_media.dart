@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class Gallery {
+class AppMedia {
   BuildContext context;
-  Gallery(this.context);
+  AppMedia(this.context);
 
   String get imagotipo {
     return Theme.of(context).brightness == Brightness.dark

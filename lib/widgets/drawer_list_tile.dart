@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:little_bird/widgets/list_tile_base.dart';
 
 class DrawerListTile extends StatelessWidget {
   /// O título do ListTile, que é o texto principal.
@@ -47,12 +48,12 @@ class DrawerListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      mouseCursor: WidgetStateMouseCursor.clickable,
-      selected: selected,
+    return ListTileBase(
       style: ListTileStyle.drawer,
-      title: Text(title),
+      selected: selected,
+      title: title,
       leading: leading,
+      trailing: selected ? const Icon(Icons.arrow_forward_ios) : null,
       onTap: onTap,
     );
   }

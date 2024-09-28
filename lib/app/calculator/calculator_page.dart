@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:little_bird/app/calculator/calculator_grid.dart';
 import 'package:little_bird/app/calculator/calculator_store.dart';
 import 'package:little_bird/enums/calculator_enum.dart';
 import 'package:little_bird/layouts/dialog_base.dart';
 import 'package:little_bird/layouts/scaffold_base.dart';
-import 'package:little_bird/widgets/calculator_grid.dart';
 
 /// Página de calculadora
 class CalculatorPage extends StatefulWidget {

@@ -33,7 +33,7 @@ class ScaffoldBase extends StatelessWidget {
     return Scaffold(
       appBar: AppBarBase(title: title, actions: actions),
       drawer: hasDrawer ? const DrawerBase() : null,
-      body: SafeArea(child: body),
+      body: SafeArea(minimum: const EdgeInsets.all(16), child: body),
       floatingActionButton: floatingActionButton,
     );
   }

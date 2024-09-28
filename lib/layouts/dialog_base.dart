@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 class DialogBase extends StatelessWidget {
   final List<Widget> children;
-  final VoidCallback? onPressed;
-  final String label;
   final String title;
   final IconData? icon;
+  final String label;
+  final List<Widget>? actions;
 
   const DialogBase({
     super.key,
     this.icon,
     required this.title,
     required this.children,
-    this.onPressed,
-    this.label = 'Ok',
+    this.label = 'Fechar',
+    this.actions,
   });
 
   @override
@@ -26,17 +26,13 @@ class DialogBase extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: children,
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Fechar'),
-          ),
-          if (onPressed != null)
-            ElevatedButton(
-              onPressed: onPressed,
-              child: Text(label),
-            ),
-        ],
+        actions: actions ??
+            <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(label),
+              ),
+            ],
       ),
     );
   }

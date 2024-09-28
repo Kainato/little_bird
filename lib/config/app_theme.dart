@@ -6,7 +6,6 @@ class AppTheme {
 
   static ThemeData light = ThemeData(
     useMaterial3: false,
-    dividerColor: Colors.transparent,
     iconTheme: const IconThemeData(color: Colors.black),
     cardTheme: CardTheme(
       color: Colors.white,

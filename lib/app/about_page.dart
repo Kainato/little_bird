@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:little_bird/config/image_path.dart';
+import 'package:little_bird/config/app_media.dart';
 import 'package:little_bird/layouts/scaffold_base.dart';
 import 'package:little_bird/widgets/transparent_divider.dart';
 
@@ -21,7 +21,7 @@ class AboutPage extends StatelessWidget {
             height: 200,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(Gallery.dashatarDev),
+                image: AssetImage(AppMedia.dashatarDev),
                 fit: BoxFit.cover,
               ),
             ),
@@ -34,7 +34,7 @@ class AboutPage extends StatelessWidget {
           ),
           const TransparentDivider(),
           SelectableText(
-            'Projeto pessoal que demonstra meu conhecimento e habilidades em Flutter de forma clara, objetiva e funcional',
+            'Este é meu projeto pessoal que demonstra meu conhecimento e habilidades em Flutter de forma clara, objetiva e funcional',
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
