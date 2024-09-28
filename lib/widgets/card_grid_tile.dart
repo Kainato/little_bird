@@ -16,11 +16,15 @@ class CardGridTile extends StatelessWidget {
   /// Cor do Card
   final Color? colorData;
 
+  /// Cor da borda do Card
+  final Color? borderColor;
+
   /// Widget que exibe um Card com um GridTile e um InkWell
   const CardGridTile({
     super.key,
     required this.onPressed,
     required this.child,
+    this.borderColor,
     this.header,
     this.footer,
     this.colorData,
@@ -29,6 +33,12 @@ class CardGridTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: borderColor == null
+            ? BorderSide.none
+            : BorderSide(color: borderColor!),
+      ),
       color: colorData ?? Theme.of(context).cardTheme.color,
       child: InkWell(
         borderRadius: BorderRadius.circular(8),

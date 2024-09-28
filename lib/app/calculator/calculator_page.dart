@@ -47,7 +47,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    store.results.isEmpty && _display().endsWith('.0')
+                    store.results.isNotEmpty && _display().endsWith('.0')
                         ? store.results.last.keys.first
                             .toString()
                             .replaceAll('.0', '')
@@ -58,24 +58,31 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 ),
               ),
               const Divider(),
-              Flexible(
-                child: GridView.builder(
-                  padding: _padding,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    mainAxisSpacing: 12,
-                    crossAxisSpacing: 12,
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 520,
+                  maxHeight: MediaQuery.of(context).size.height * 0.7,
+                ),
+                child: Flexible(
+                  child: GridView.builder(
+                    padding: _padding,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                    ),
+                    itemCount: calculatorEnumList.length,
+                    itemBuilder: (context, index) {
+                      CalculatorClass item =
+                          CalculatorClass.fromMap(calculatorEnumList[index]);
+                      return CalculatorGrid(
+                        label: item.label,
+                        style: item.style,
+                        onPressed: () => store.calculate(item: item),
+                      );
+                    },
                   ),
-                  itemCount: calculatorEnumList.length,
-                  itemBuilder: (context, index) {
-                    CalculatorClass item =
-                        CalculatorClass.fromMap(calculatorEnumList[index]);
-                    return CalculatorGrid(
-                      label: item.label,
-                      style: item.style,
-                      onPressed: () => store.calculate(item: item),
-                    );
-                  },
                 ),
               ),
             ],
@@ -114,31 +121,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   ),
                   ElevatedButton(
                     child: const Text('Limpar Histórico'),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => DialogBase(
-                          title: 'Confirmação',
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Cancelar'),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                store.clearHistory();
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Confirmar'),
-                            ),
-                          ],
-                          children: const [
-                            Text('Deseja realmente limpar o histórico?'),
-                          ],
-                        ),
-                      );
-                    },
+                    onPressed: () => _clearHistory(context),
                   ),
                 ],
           children: [
@@ -148,16 +131,21 @@ class _CalculatorPageState extends State<CalculatorPage> {
               child: ListView.builder(
                 itemCount: store.results.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      '${store.results[index].values.first} =',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    subtitle: Text(
-                      store.results[index].keys.first,
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
+                  return Column(
+                    children: [
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(
+                          '${store.results[index].values.first} =',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        subtitle: Text(
+                          store.results[index].keys.first,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ),
+                      if (index < store.results.length - 1) const Divider(),
+                    ],
                   );
                 },
               ),
@@ -165,6 +153,32 @@ class _CalculatorPageState extends State<CalculatorPage> {
           ],
         );
       },
+    );
+  }
+
+  Future _clearHistory(BuildContext dialogContext) async {
+    showDialog(
+      context: context,
+      builder: (_) => DialogBase(
+        title: 'Confirmação',
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              store.clearHistory();
+              Navigator.pop(dialogContext);
+              Navigator.pop(context);
+            },
+            child: const Text('Confirmar'),
+          ),
+        ],
+        children: const [
+          Text('Deseja realmente limpar o histórico?'),
+        ],
+      ),
     );
   }
 }

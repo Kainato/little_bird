@@ -26,6 +26,7 @@ class _CalculatorGridState extends State<CalculatorGrid> {
   @override
   Widget build(BuildContext context) {
     return CardGridTile(
+      borderColor: AppTheme(context).backgroundLogo,
       onPressed: onPressed,
       child: Center(
         child: Text(

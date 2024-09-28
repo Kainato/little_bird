@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:little_bird/config/app_media.dart';
+import 'package:little_bird/config/app_theme.dart';
 import 'package:little_bird/layouts/scaffold_base.dart';
 import 'package:little_bird/widgets/transparent_divider.dart';
 
+/// Página de sobre
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
@@ -16,15 +18,10 @@ class AboutPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          Container(
-            width: double.maxFinite,
-            height: 200,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppMedia.dashatarDev),
-                fit: BoxFit.cover,
-              ),
-            ),
+          CircleAvatar(
+            radius: 100,
+            backgroundColor: AppTheme(context).backgroundLogo,
+            backgroundImage: AssetImage(AppMedia.dashatarDev),
           ),
           const TransparentDivider(),
           SelectableText(
