@@ -30,51 +30,58 @@ class _CalculatorPageState extends State<CalculatorPage> {
       hasDrawer: true,
       actions: [
         IconButton(
+          splashRadius: 24,
           icon: const Icon(Icons.history),
           onPressed: () => _history(),
         ),
       ],
       title: 'Calculadora',
-      body: Observer(builder: (context) {
-        return Column(
-          children: [
-            Container(
-              width: double.infinity,
-              padding: _padding,
-              constraints: const BoxConstraints(minHeight: 100),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  _display(),
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.right,
-                ),
-              ),
-            ),
-            const Divider(),
-            Flexible(
-              child: GridView.builder(
+      body: Observer(
+        builder: (context) {
+          return Column(
+            children: [
+              Container(
+                width: double.infinity,
                 padding: _padding,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
+                constraints: const BoxConstraints(minHeight: 100),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    store.results.isEmpty && _display().endsWith('.0')
+                        ? store.results.last.keys.first
+                            .toString()
+                            .replaceAll('.0', '')
+                        : _display(),
+                    style: Theme.of(context).textTheme.headlineMedium,
+                    textAlign: TextAlign.right,
+                  ),
                 ),
-                itemCount: calculatorEnumList.length,
-                itemBuilder: (context, index) {
-                  CalculatorClass item =
-                      CalculatorClass.fromMap(calculatorEnumList[index]);
-                  return CalculatorGrid(
-                    label: item.label,
-                    style: item.style,
-                    onPressed: () => store.calculate(item: item),
-                  );
-                },
               ),
-            ),
-          ],
-        );
-      }),
+              const Divider(),
+              Flexible(
+                child: GridView.builder(
+                  padding: _padding,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                  ),
+                  itemCount: calculatorEnumList.length,
+                  itemBuilder: (context, index) {
+                    CalculatorClass item =
+                        CalculatorClass.fromMap(calculatorEnumList[index]);
+                    return CalculatorGrid(
+                      label: item.label,
+                      style: item.style,
+                      onPressed: () => store.calculate(item: item),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -98,6 +105,42 @@ class _CalculatorPageState extends State<CalculatorPage> {
         return DialogBase(
           icon: Icons.history,
           title: 'Histórico',
+          actions: store.results.isEmpty
+              ? null
+              : [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Fechar'),
+                  ),
+                  ElevatedButton(
+                    child: const Text('Limpar Histórico'),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => DialogBase(
+                          title: 'Confirmação',
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Cancelar'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                store.clearHistory();
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Confirmar'),
+                            ),
+                          ],
+                          children: const [
+                            Text('Deseja realmente limpar o histórico?'),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
           children: [
             SizedBox(
               height: 300,
@@ -108,12 +151,12 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   return ListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      store.results[index].values.first,
-                      style: Theme.of(context).textTheme.titleSmall,
+                      '${store.results[index].values.first} =',
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     subtitle: Text(
                       store.results[index].keys.first,
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                   );
                 },

@@ -105,11 +105,22 @@ mixin _$CalculatorStore on _CalculatorStoreBase, Store {
       ActionController(name: '_CalculatorStoreBase', context: context);
 
   @override
-  void getHistory() {
+  void clearHistory() {
     final _$actionInfo = _$_CalculatorStoreBaseActionController.startAction(
-        name: '_CalculatorStoreBase.getHistory');
+        name: '_CalculatorStoreBase.clearHistory');
     try {
-      return super.getHistory();
+      return super.clearHistory();
+    } finally {
+      _$_CalculatorStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic calculateHistory(List<String> history) {
+    final _$actionInfo = _$_CalculatorStoreBaseActionController.startAction(
+        name: '_CalculatorStoreBase.calculateHistory');
+    try {
+      return super.calculateHistory(history);
     } finally {
       _$_CalculatorStoreBaseActionController.endAction(_$actionInfo);
     }

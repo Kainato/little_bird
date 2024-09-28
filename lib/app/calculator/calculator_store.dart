@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:little_bird/enums/calculator_enum.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,15 +27,44 @@ abstract class _CalculatorStoreBase with Store {
   Future<void> initState() async {
     prefs = await SharedPreferences.getInstance();
     List<String> history = prefs.getStringList('calculator_history') ?? [];
-    log('history: $history');
-    results = history
-        .map((e) => {e.split(' ')[0]: e.split(' ')[1]})
-        .toList()
-        .asObservable();
+    calculateHistory(history);
   }
 
   @action
-  void getHistory() {}
+  void clearHistory() {
+    prefs.remove('calculator_history');
+    results.clear();
+  }
+
+  @action
+  calculateHistory(List<String> history) {
+    results = history
+        .map((e) {
+          e = e.replaceAll('=', '');
+          List<String> values = e.split(' ');
+          double first = double.parse(values[0]);
+          double second = double.parse(values[2]);
+          double result = 0;
+          switch (values[1]) {
+            case '+':
+              result = first + second;
+              break;
+            case '-':
+              result = first - second;
+              break;
+            case 'x':
+              result = first * second;
+              break;
+            case '/':
+              result = first / second;
+              break;
+            default:
+          }
+          return {result.toString(): e};
+        })
+        .toList()
+        .asObservable();
+  }
 
   @action
   void calculate({required CalculatorClass item}) {
@@ -87,7 +115,13 @@ abstract class _CalculatorStoreBase with Store {
               break;
             default:
           }
-          results.add({firstNumber: result.toString()});
+          results.add({
+            result.toString(): '$firstNumber $operatorSymbol $secondNumber'
+          });
+          prefs.setStringList(
+            'calculator_history',
+            results.map((e) => e.values.first).toList(),
+          );
           firstNumber = result.toString();
           secondNumber = '';
           operatorSymbol = '';
