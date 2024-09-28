@@ -9,13 +9,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  introduction_screen: ^3.1.14
   font_awesome_flutter: ^10.7.0
   google_fonts: ^6.2.1
   gap: ^3.0.1
   mobx: ^2.3.3+2
   flutter_mobx: ^2.0.0
+  linkfy_text: ^1.1.6
   shared_preferences: ^2.3.2
-  introduction_screen: ^3.1.14
+  selectable_autolink_text: ^2.6.0
 
 dev_dependencies:
   flutter_test:
@@ -29,6 +31,7 @@ flutter:
 
   assets:
     - assets/
+    - assets/developer/
     - assets/branding/
     - assets/branding/alternatives/
     - assets/branding/original/

@@ -39,4 +39,12 @@ class Gallery {
         ? 'assets/branding/alternatives/logotipo_vertical_alternativo.png'
         : 'assets/branding/original/logotipo_vertical.png';
   }
+
+  static String get dashatarDev {
+    return 'assets/developer/dashatar_developer.png';
+  }
+
+  static String get dashatarDesigner {
+    return 'assets/developer/dashatar_designer.png';
+  }
 }
