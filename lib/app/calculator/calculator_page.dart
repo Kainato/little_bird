@@ -63,26 +63,23 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   maxWidth: 520,
                   maxHeight: MediaQuery.of(context).size.height * 0.7,
                 ),
-                child: Flexible(
-                  child: GridView.builder(
-                    padding: _padding,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
-                    ),
-                    itemCount: calculatorEnumList.length,
-                    itemBuilder: (context, index) {
-                      CalculatorClass item =
-                          CalculatorClass.fromMap(calculatorEnumList[index]);
-                      return CalculatorGrid(
-                        label: item.label,
-                        style: item.style,
-                        onPressed: () => store.calculate(item: item),
-                      );
-                    },
+                child: GridView.builder(
+                  padding: _padding,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
                   ),
+                  itemCount: calculatorEnumList.length,
+                  itemBuilder: (context, index) {
+                    CalculatorClass item =
+                        CalculatorClass.fromMap(calculatorEnumList[index]);
+                    return CalculatorGrid(
+                      label: item.label,
+                      style: item.style,
+                      onPressed: () => store.calculate(item: item),
+                    );
+                  },
                 ),
               ),
             ],
